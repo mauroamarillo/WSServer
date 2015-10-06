@@ -12,6 +12,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Encaro X 2 :) </h1>
+        <h1>Encaro :) </h1>
     </body>
 </html>
