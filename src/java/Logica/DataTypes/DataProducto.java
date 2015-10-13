@@ -13,11 +13,19 @@ import Logica.Producto;
  */
 public class DataProducto {
 
-    protected final String nombre;
-    protected final String descripcion;
-    protected final float precio;
-    protected final String imagen;
-    protected final String restaurante;
+    String nombre;
+    String descripcion;
+    float precio;
+    String imagen;
+    String restaurante;
+
+    public DataProducto() {
+        nombre = null;
+        descripcion = null;
+        precio = 0;
+        imagen = null;
+        restaurante = null;
+    }
 
     public DataProducto(String nombre, String descripcion, float precio, String imagen, String restaurante) {
         this.nombre = nombre;

@@ -6,6 +6,7 @@
 package Logica.DataTypes;
 
 import Logica.Estado;
+import Logica.Fecha;
 import Logica.Pedido;
 import Logica.ProdPedido;
 import java.sql.Date;
@@ -20,17 +21,29 @@ import java.util.Map;
  */
 public class DataPedido {
 
-    private final int numero;
-    private final Date fecha;
-    private final Estado estado;
-    private final HashMap prodPedidos;
-    private final HashMap historialEstados;
-    private final String cliente;
-    private final String restaurante;
-    private final float precio;
-    private final DataCalificacion calificacion;
+    int numero;
+    Fecha fecha;
+    Estado estado;
+    HashMap prodPedidos;
+    HashMap historialEstados;
+    String cliente;
+    String restaurante;
+    float precio;
+    DataCalificacion calificacion;
 
-    public DataPedido(int numero, Date fecha, Estado estado, HashMap prodPedidos, String cliente, String restaurante, float precio, DataCalificacion calificacion, HashMap historialEstados) {
+    public DataPedido() {
+        this.numero = 0;
+        this.fecha = null;
+        this.estado = null;
+        this.prodPedidos = null;
+        this.cliente = null;
+        this.restaurante = null;
+        this.precio = 0;
+        this.calificacion = null;
+        this.historialEstados = null;
+    }
+
+    public DataPedido(int numero, Fecha fecha, Estado estado, HashMap prodPedidos, String cliente, String restaurante, float precio, DataCalificacion calificacion, HashMap historialEstados) {
         this.numero = numero;
         this.fecha = fecha;
         this.estado = estado;
@@ -42,9 +55,21 @@ public class DataPedido {
         this.historialEstados = historialEstados;
     }
 
+    public DataPedido(int numero, Date fecha, Estado estado, HashMap prodPedidos, String cliente, String restaurante, float precio, DataCalificacion calificacion, HashMap historialEstados) {
+        this.numero = numero;
+        this.fecha = new Fecha(fecha);
+        this.estado = estado;
+        this.prodPedidos = prodPedidos;
+        this.cliente = cliente;
+        this.restaurante = restaurante;
+        this.precio = precio;
+        this.calificacion = calificacion;
+        this.historialEstados = historialEstados;
+    }
+
     public DataPedido(Pedido P) throws SQLException, ClassNotFoundException {
         this.numero = P.getNumero();
-        this.fecha = P.getFecha();
+        this.fecha = new Fecha(P.getFecha());
         this.estado = P.getEstado();
         this.cliente = P.getCliente().getNickname();
         this.restaurante = P.getRestaurante().getNickname();
@@ -69,7 +94,7 @@ public class DataPedido {
         return numero;
     }
 
-    public Date getFecha() {
+    public Fecha getFecha() {
         return fecha;
     }
 
@@ -96,5 +121,5 @@ public class DataPedido {
     public HashMap getHistorialEstados() {
         return historialEstados;
     }
-    
+
 }

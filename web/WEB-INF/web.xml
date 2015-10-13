@@ -4,13 +4,13 @@
         <listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
     </listener>
     <servlet>
-        <servlet-name>WSUsuarios</servlet-name>
+        <servlet-name>WSQuickOrder</servlet-name>
         <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>WSUsuarios</servlet-name>
-        <url-pattern>/WSUsuarios</url-pattern>
+        <servlet-name>WSQuickOrder</servlet-name>
+        <url-pattern>/WSQuickOrder</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

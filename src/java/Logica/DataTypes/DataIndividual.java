@@ -13,6 +13,9 @@ import Logica.Individual;
  */
 public class DataIndividual extends DataProducto{
 
+    public DataIndividual(){
+        super();
+    }
     public DataIndividual(String nombre, String descripcion, float precio, String imagen, String restaurante) {
         super(nombre, descripcion, precio, imagen, restaurante);
     }

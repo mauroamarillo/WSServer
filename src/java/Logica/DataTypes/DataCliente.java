@@ -5,13 +5,9 @@
  */
 package Logica.DataTypes;
 
-import Logica.Cliente;
-import Logica.Pedido;
+import Logica.Fecha;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  *
@@ -19,17 +15,77 @@ import java.util.Map;
  */
 public class DataCliente {
 
-    private final String nickname;
-    private final String pwd;
-    private final String nombre;
-    private final String email;
-    private final String direccion;
-    private final String apellido;
-    private final Date fechaNac;
-    private final String imagen;
+    String nickname;
+    String pwd;
+    String nombre;
+    String email;
+    String direccion;
+    String apellido;
+    Fecha fechaNac;
+    String imagen;
     private final HashMap pedidos;
 
+    public void setFechaNac(Fecha fechaNac) {
+        this.fechaNac = fechaNac;
+    }
+
+    public void setNombre(String nom) {
+        this.nombre = nom;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
+
+   /* public void setPedidos(HashMap pedidos) {
+        this.pedidos = pedidos;
+    }*/
+
+    public DataCliente() {
+        this.nickname = null;
+        this.pwd = null;
+        this.nombre = null;
+        this.email = null;
+        this.direccion = null;
+        this.apellido = null;
+        this.fechaNac = null;
+        this.imagen = null;
+        this.pedidos = null;
+    }
+
     public DataCliente(String nickname, String nombre, String email, String direccion, String apellido, Date fechaNac, String imagen, HashMap pedidos, String pwd) {
+        this.nickname = nickname;
+        this.pwd = pwd;
+        this.nombre = nombre;
+        this.email = email;
+        this.direccion = direccion;
+        this.apellido = apellido;
+        this.fechaNac = new Fecha(fechaNac);
+        this.imagen = imagen;
+        this.pedidos = pedidos;
+    }
+
+    public DataCliente(String nickname, String nombre, String email, String direccion, String apellido, Fecha fechaNac, String imagen, HashMap pedidos, String pwd) {
         this.nickname = nickname;
         this.pwd = pwd;
         this.nombre = nombre;
@@ -41,31 +97,10 @@ public class DataCliente {
         this.pedidos = pedidos;
     }
 
-    public DataCliente(Cliente C) throws SQLException, ClassNotFoundException {
-        this.nickname = C.getNickname();
-        this.pwd = C.getPwd();
-        this.nombre = C.getNombre();
-        this.email = C.getEmail();
-        this.direccion = C.getDireccion();
-        this.apellido = C.getApellido();
-        this.fechaNac = C.getFechaNac();
-        this.imagen = C.getImagen();
-        this.pedidos = new HashMap();
-        /*cambia los objetos pedido por datatypes DataPedido*/
-        if (C.getPedidos() != null) {
-            Iterator it = C.getPedidos().entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry entry = (Map.Entry) it.next();
-                Pedido p = (Pedido) entry.getValue();
-                pedidos.put(p.getNumero(), p.getDataType());
-            }
-        }
-    }
-
     public String getNickname() {
         return nickname;
     }
-    
+
     public String getPwd() {
         return pwd;
     }
@@ -86,7 +121,7 @@ public class DataCliente {
         return apellido;
     }
 
-    public Date getFechaNac() {
+    public Fecha getFechaNac() {
         return fechaNac;
     }
 

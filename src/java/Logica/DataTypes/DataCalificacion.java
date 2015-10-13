@@ -10,14 +10,15 @@ package Logica.DataTypes;
  * @author Mauro
  */
 public class DataCalificacion {
-    private final int puntaje;
-    private final String comentario;
+
+    int puntaje;
+    String comentario;
 
     public DataCalificacion(int puntaje, String comentario) {
         this.puntaje = puntaje;
         this.comentario = comentario;
     }
-    
+
     public DataCalificacion() {
         this.puntaje = 0;
         this.comentario = "No calificado";
@@ -30,4 +31,13 @@ public class DataCalificacion {
     public String getComentario() {
         return comentario;
     }
+
+    public void setPuntaje(int puntaje) {
+        this.puntaje = puntaje;
+    }
+
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
+    }
+    
 }

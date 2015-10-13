@@ -12,8 +12,14 @@ import Logica.ProdPedido;
  * @author Jean
  */
 public class DataProdPedido {
-    private final int cantidad;
-    private final DataProducto producto;
+
+    int cantidad;
+    DataProducto producto;
+
+    public DataProdPedido() {
+        cantidad = 0;
+        producto = null;
+    }
 
     public DataProdPedido(int cantidad, DataProducto producto) {
         this.cantidad = cantidad;
@@ -24,7 +30,6 @@ public class DataProdPedido {
         this.cantidad = pp.getCantidad();
         this.producto = new DataProducto(pp.getProducto());
     }
-    
 
     public int getCantidad() {
         return cantidad;
@@ -32,6 +37,6 @@ public class DataProdPedido {
 
     public DataProducto getProducto() {
         return producto;
-    }   
-    
+    }
+
 }

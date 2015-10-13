@@ -6,14 +6,20 @@
 package Logica.DataTypes;
 
 import Logica.ProdPromo;
+
 /**
  *
  * @author Jean
  */
 public class DataProdPromo {
 
-    private final int cantidad;
-    private final DataIndividual individual;
+    int cantidad;
+    DataIndividual individual;
+
+    public DataProdPromo() {
+        cantidad = 0;
+        individual = null;
+    }
 
     public DataProdPromo(int cantidad, DataIndividual individual) {
         this.cantidad = cantidad;

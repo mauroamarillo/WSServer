@@ -18,16 +18,16 @@ import java.util.Map;
  */
 public class DataRestaurante {
 
-    private final String nickname;
-    private final String pwd;
-    private final String nombre;
-    private final String email;
-    private final String direccion;
+    String nickname;
+    String pwd;
+    String nombre;
+    String email;
+    String direccion;
 
-    private final HashMap categorias;
-    private final HashMap individuales;
-    private final HashMap promociones;
-    private final HashMap imagenes;
+    HashMap categorias;
+    HashMap individuales;
+    HashMap promociones;
+    HashMap imagenes;
 
     public DataRestaurante(String nickname, String nombre, String email, String direccion, HashMap categorias, HashMap individuales, HashMap promociones, HashMap imagenes, String pwd) {
         this.nickname = nickname;
@@ -39,6 +39,18 @@ public class DataRestaurante {
         this.individuales = individuales;
         this.promociones = promociones;
         this.imagenes = imagenes;
+    }
+
+    public DataRestaurante() {
+        this.nickname = null;
+        this.pwd = null;
+        this.nombre = null;
+        this.email = null;
+        this.direccion = null;
+        this.categorias = null;
+        this.individuales = null;
+        this.promociones = null;
+        this.imagenes = null;
     }
 
     public DataRestaurante(Restaurante R) {
@@ -78,7 +90,7 @@ public class DataRestaurante {
             this.imagenes.put(entry.getKey(), I);
         }
     }
-    
+
     public String getNickname() {
         return nickname;
     }

@@ -12,7 +12,12 @@ package Logica.DataTypes;
 public class DataHistorialPedido {
     int estado;
     String fechaHora;
-
+    
+    public DataHistorialPedido(){
+        estado = 0;
+        fechaHora = "sinfecha";
+    }
+    
     public DataHistorialPedido(int estado, String fechaHora) {
         this.estado = estado;
         this.fechaHora = fechaHora;

@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <endpoints version="2.0" xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime">
-  <endpoint implementation="WebServices.WSUsuarios" name="WSUsuarios" url-pattern="/WSUsuarios"/>
+  <endpoint implementation="WebServices.WSQuickOrder" name="WSQuickOrder" url-pattern="/WSQuickOrder"/>
 </endpoints>

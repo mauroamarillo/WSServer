@@ -372,7 +372,7 @@ public final class ControladorUsuario {
         if (C == null) {
             return null;
         }
-        return new DataCliente(C);
+        return C.getDataType();
     }
 
     public DataCliente buscarClientePorEmail(String email) throws SQLException, ClassNotFoundException {

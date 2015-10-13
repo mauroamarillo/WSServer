@@ -17,9 +17,16 @@ import java.util.Map;
  */
 public class DataPromocion extends DataProducto {
 
-    private final float descuento;
-    private final boolean activo;
-    private final HashMap dataProdPromo;
+    float descuento;
+    boolean activo;
+    HashMap dataProdPromo;
+
+    public DataPromocion() {
+        super();
+        descuento = 0;
+        activo = false;
+        dataProdPromo = null;
+    }
 
     public DataPromocion(float descuento, boolean activo, HashMap dataProdPromo, String nombre, String descripcion, float precio, String imagen, String restaurante) {
         super(nombre, descripcion, precio, imagen, restaurante);
