@@ -19,7 +19,7 @@ public class DataPromocion extends DataProducto {
 
     float descuento;
     boolean activo;
-    HashMap dataProdPromo;
+    private final HashMap dataProdPromo;
 
     public DataPromocion() {
         super();
@@ -78,6 +78,14 @@ public class DataPromocion extends DataProducto {
 
     public boolean isActivo() {
         return activo;
+    }
+
+    public void setDescuento(float descuento) {
+        this.descuento = descuento;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 
 }

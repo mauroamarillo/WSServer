@@ -24,10 +24,10 @@ public class DataRestaurante {
     String email;
     String direccion;
 
-    HashMap categorias;
-    HashMap individuales;
-    HashMap promociones;
-    HashMap imagenes;
+    private final HashMap categorias;
+    private final HashMap individuales;
+    private final HashMap promociones;
+    private final HashMap imagenes;
 
     public DataRestaurante(String nickname, String nombre, String email, String direccion, HashMap categorias, HashMap individuales, HashMap promociones, HashMap imagenes, String pwd) {
         this.nickname = nickname;
@@ -122,5 +122,30 @@ public class DataRestaurante {
     public HashMap getImagenes() {
         return imagenes;
     }
+
+    public String getPwd() {
+        return pwd;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+    
 
 }

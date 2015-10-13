@@ -24,8 +24,8 @@ public class DataPedido {
     int numero;
     Fecha fecha;
     Estado estado;
-    HashMap prodPedidos;
-    HashMap historialEstados;
+    private final HashMap prodPedidos;
+    private final HashMap historialEstados;
     String cliente;
     String restaurante;
     float precio;
@@ -120,6 +120,34 @@ public class DataPedido {
 
     public HashMap getHistorialEstados() {
         return historialEstados;
+    }
+
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
+
+    public void setFecha(Fecha fecha) {
+        this.fecha = fecha;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
+
+    public void setCliente(String cliente) {
+        this.cliente = cliente;
+    }
+
+    public void setRestaurante(String restaurante) {
+        this.restaurante = restaurante;
+    }
+
+    public void setPrecio(float precio) {
+        this.precio = precio;
+    }
+
+    public void setCalificacion(DataCalificacion calificacion) {
+        this.calificacion = calificacion;
     }
 
 }

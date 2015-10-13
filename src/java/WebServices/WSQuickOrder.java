@@ -8,8 +8,11 @@ package WebServices;
 import Logica.ControladorUsuario;
 import Logica.DataTypes.DataCalificacion;
 import Logica.DataTypes.DataCliente;
+import Logica.DataTypes.DataIndividual;
 import Logica.DataTypes.DataPedido;
 import Logica.DataTypes.DataProdPedido;
+import Logica.DataTypes.DataProducto;
+import Logica.DataTypes.DataPromocion;
 import Logica.DataTypes.DataRestaurante;
 import Logica.Estado;
 import java.sql.SQLException;
@@ -382,4 +385,17 @@ public class WSQuickOrder {
             Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    /*sacar
+    public DataIndividual pruebaIndividual() {
+        return new DataIndividual();
+    }
+
+    public DataProducto pruebaProducto() {
+        return new DataProducto();
+    }
+
+    public DataPromocion pruebaPromocion() {
+        return new DataPromocion();
+    }*/
 }

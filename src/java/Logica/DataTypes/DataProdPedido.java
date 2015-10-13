@@ -39,4 +39,12 @@ public class DataProdPedido {
         return producto;
     }
 
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public void setProducto(DataProducto producto) {
+        this.producto = producto;
+    }
+
 }
