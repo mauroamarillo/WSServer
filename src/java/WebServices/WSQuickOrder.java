@@ -15,6 +15,7 @@ import Logica.DataTypes.DataProducto;
 import Logica.DataTypes.DataPromocion;
 import Logica.DataTypes.DataRestaurante;
 import Logica.Estado;
+import java.io.File;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -386,16 +387,71 @@ public class WSQuickOrder {
         }
     }
 
+    public Object[] getDataPromociones() {
+        iniciar();
+        return CU.getCP().getDataPromociones().values().toArray();
+    }
+
+    public Object[] getDataIndividuales() {
+        iniciar();
+        return CU.getCP().getDataIndividuales().values().toArray();
+    }
+
+    public DataProducto BuscarDataXRestaurante_Producto(String R_P) {
+        iniciar();
+        return CU.getCP().BuscarDataXRestaurante_Producto(R_P);
+    }
+
+    public void insertarIndividual(String nombre, String descripcion,
+            String precio, File img, String restaurante) {
+        try {
+            iniciar();
+            CU.getCP().insertarIndividual(nombre, descripcion, precio, img, restaurante);
+        } catch (Exception ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void insertarPromocion(String nombre, String descripcion,
+            File img, boolean activa, float descuento, String restaurante,
+            HashMap subProductos) {
+        try {
+            iniciar();
+            CU.getCP().insertarPromocion(nombre, descripcion, img, activa, descuento, restaurante, subProductos);
+        } catch (Exception ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public DataIndividual buscarDataIndividual(String nombre, String restaurante) {
+        iniciar();
+        return CU.getCP().buscarDataIndividual(nombre, restaurante);
+    }
+
+    public Object[] buscarProductos(String R) {
+        iniciar();
+        return CU.getCP().buscarProductos(R).values().toArray();
+    }
+
+    public Object[] buscarProductosI(String R) {
+        iniciar();
+        return CU.getCP().buscarProductosI(R).values().toArray();
+    }
+
+    public Object[] buscarProductosP(String R) {
+        iniciar();
+        return CU.getCP().buscarProductosP(R).values().toArray();
+    }
     /*sacar
-    public DataIndividual pruebaIndividual() {
-        return new DataIndividual();
-    }
+     public DataIndividual pruebaIndividual() {
+     return new DataIndividual();
+     }
 
-    public DataProducto pruebaProducto() {
-        return new DataProducto();
-    }
+     public DataProducto pruebaProducto() {
+     return new DataProducto();
+     }
 
-    public DataPromocion pruebaPromocion() {
-        return new DataPromocion();
-    }*/
+     public DataPromocion pruebaPromocion() {
+     return new DataPromocion();
+     }*/
 }
