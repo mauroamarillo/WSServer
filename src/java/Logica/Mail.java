@@ -20,9 +20,6 @@ public class Mail {
     }
     
         public void sendMail(String para, String asunto, String mensaje){
-            System.out.println(para);
-            System.out.println(asunto);
-            System.out.println(mensaje);
             Properties properties = System.getProperties();
             
             properties.setProperty("mail.smtp.host", "localhost");
@@ -36,7 +33,6 @@ public class Mail {
                 message.setSubject(asunto);
                 message.setContent(mensaje, "text/html; charset=utf-8");
                 Transport.send(message);
-                System.out.println("yay");
             }catch (MessagingException mex) {
                 System.out.println(mex.getMessage());
             }

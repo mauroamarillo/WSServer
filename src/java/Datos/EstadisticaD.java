@@ -33,7 +33,7 @@ public class EstadisticaD {
     
     public ResultSet consultarVisitasRestaurante() throws SQLException, ClassNotFoundException{
         this.st = es.generarSt();
-        String seleccion = "SELECT id, nickname, nombre, email, direccion, visitas" 
+        String seleccion = "SELECT nickname, nombre, email, direccion, visitas" 
                 + " FROM usuarios, (SELECT split_part(url, '?r=', 2) AS restaurante, count(id) AS visitas" 
                 + "                 FROM historialvisitas"
                 + "                 GROUP BY restaurante) AS historial" 
@@ -47,7 +47,7 @@ public class EstadisticaD {
 
     public ResultSet consultarVisitasPorURL() throws SQLException, ClassNotFoundException {
         this.st = es.generarSt();
-        String seleccion = "SELECT id, substring(url from position('/' in url)) AS url1, count(id) AS visitas" 
+        String seleccion = "SELECT substring(url from position('/' in url)) AS url1, count(id) AS visitas" 
                 + " FROM historialvisitas" 
                 + " GROUP BY url1"
                 + " ORDER BY visitas DESC;";
@@ -58,7 +58,7 @@ public class EstadisticaD {
     
     public ResultSet consultarVisitasPorSO() throws SQLException, ClassNotFoundException{
         this.st = es.generarSt();
-        String seleccion = "SELECT id,  so, count(id) AS visitas" 
+        String seleccion = "SELECT so, count(id) AS visitas" 
                 + " FROM historialvisitas" 
                 + " GROUP BY so"
                 + " ORDER BY visitas DESC;";
@@ -69,7 +69,7 @@ public class EstadisticaD {
     
     public ResultSet consultarVisitasPorBrowser() throws SQLException, ClassNotFoundException{
         this.st = es.generarSt();
-        String seleccion = "SELECT id,  browser, count(id) AS visitas" 
+        String seleccion = "SELECT browser, count(id) AS visitas" 
                 + " FROM historialvisitas" 
                 + " GROUP BY browser"
                 + " ORDER BY visitas DESC;";

@@ -1,5 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
+ /* To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -23,23 +22,19 @@ public class Estadistica {
         EstaDatos.insertarVisita(ip, url, browser, so);
     }
     
-    public HashMap getVisitas() throws SQLException, ClassNotFoundException{
-        ResultSet datos = EstaDatos.consultarVisitasPorURL();
-        HashMap resultado = new HashMap();
-        while(datos.next()){
-            resultado.put(datos.getString("restaurante"), datos.getInt("visitas"));
-        }
-        return resultado;
+    public ResultSet getVisitas() throws SQLException, ClassNotFoundException{
+        return EstaDatos.consultarVisitasPorURL();
     }
     
-    public HashMap getVisitasPorRestaurante() throws SQLException, ClassNotFoundException{
-        ResultSet datos = EstaDatos.consultarVisitasRestaurante();
-        HashMap resultado = new HashMap();
-        while(datos.next()){
-            resultado.put(datos.getString("restaurante"), datos.getInt("visitas"));
-        }
-        return resultado;
+    public ResultSet getVisitasPorRestaurante() throws SQLException, ClassNotFoundException{
+        return EstaDatos.consultarVisitasRestaurante();
     }
     
-    //GET VISITAS POR SO Y POR BROWSERRRRRRR
+    public ResultSet getVisitasPorBrowser() throws SQLException, ClassNotFoundException{
+        return EstaDatos.consultarVisitasPorBrowser();
+    }
+    
+    public ResultSet getVisitasPorSO() throws SQLException, ClassNotFoundException{
+        return EstaDatos.consultarVisitasPorSO();
+    }
 }
