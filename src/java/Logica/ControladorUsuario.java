@@ -6,6 +6,7 @@ import Datos.UsuarioD;
 import Logica.DataTypes.DataCalificacion;
 import Logica.DataTypes.DataCliente;
 import Logica.DataTypes.DataHistorialPedido;
+import Logica.DataTypes.DataIndividual;
 import Logica.DataTypes.DataPedido;
 import Logica.DataTypes.DataProdPedido;
 import Logica.DataTypes.DataRestaurante;
@@ -585,6 +586,53 @@ public final class ControladorUsuario {
     public void cambiarEstadoPedido(int numero, int estado) throws SQLException, ClassNotFoundException {
         PedidoDatos.modificarEstado(numero, estado);
         asignarPedidosAClientes();
+    }
+    
+    public void confirmarPedido(int numero) throws SQLException, ClassNotFoundException{
+        //Cambiar estado del pedido
+        cambiarEstadoPedido(numero, 0);
+        
+        //generar cuerpo del mail
+        DataPedido pedido = (DataPedido) getDataPedidos().get(numero);
+        
+        Cliente c = (Cliente) Clientes.get(pedido.getCliente());
+        
+        String mensaje = "<!DOCTYPE html><html><head>Estimado " + c.getNombre() + " " + c.getApellido() + ". Su pedido ha sido recibido con exito:</head>";
+        
+        mensaje += "<body><h5>--Detalles del pedido</h5>"
+                + "<h5>-Productos:</h5>"
+                + "<ul>";
+        
+        Iterator it = pedido.getProdPedidos().entrySet().iterator();
+        
+        while(it.hasNext()){
+            Map.Entry entryProd = (Map.Entry) it.next();
+            DataProdPedido prod = (DataProdPedido) entryProd.getValue();
+            
+            mensaje += "<li>Nombre: " + prod.getProducto().getNombre() + " - Tipo : ";
+            
+            if(prod.getProducto() instanceof DataIndividual)
+                mensaje += "Individual";
+            else
+                mensaje += "Promocion";
+            
+            mensaje += " - Cantidad: " + prod.getCantidad() + " - PU: $" + prod.getProducto().getPrecio() + " - PV: $" + (prod.getProducto().getPrecio() * prod.getCantidad()) + "</li>";
+        }
+        
+        Restaurante r = (Restaurante) Restaurantes.get(pedido.getRestaurante());
+        
+        mensaje += "</ul>"
+                + "<h5>-Precio Total: $" + pedido.getPrecio() + "</h5>"
+                + "<p>Gracias por preferirnos,</p>"
+                + "<p>Saludos.</p>"
+                + "<p>" + r.getNombre() + "</p>"
+                + "</body></html>";
+        
+        Mail m = new Mail();
+        
+        m.sendMail(c.getEmail(), "QuickOrder [" + pedido.getFecha().toString() + "]", mensaje);
+        
+        System.out.println(mensaje);
     }
 
     public void actualizarDatos() throws SQLException, ClassNotFoundException {
