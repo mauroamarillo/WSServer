@@ -10,7 +10,6 @@ import Logica.DataTypes.DataIndividual;
 import Logica.DataTypes.DataPedido;
 import Logica.DataTypes.DataProdPedido;
 import Logica.DataTypes.DataRestaurante;
-import java.io.File;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -114,9 +113,8 @@ public final class ControladorUsuario {
         }
         return resultado;
     }
-    
-    /*obtener pedidos de un producto*/
 
+    /*obtener pedidos de un producto*/
     public HashMap getDataPedidosProducto(String R, String P) throws SQLException, ClassNotFoundException {
         HashMap resultado = new HashMap();
         HashMap aux = getDataPedidos();
@@ -171,26 +169,24 @@ public final class ControladorUsuario {
         return consultarRestaurantesPorCategoria(categoria).size();
     }
 
-    public void insertarCliente(String nick, String email, String dir, String nombre, String apellido, String D, String M, String A, File img, String pwd) throws SQLException, Exception {
+    public void insertarCliente(String nick, String email, String dir, String nombre, String apellido, 
+            String D, String M, String A, String img, String pwd) throws SQLException, Exception {
         Cliente C;
         Fecha fecha = new Fecha(D, M, A);
 
-        if (img != null) {
-            C = new Cliente(nick, nombre, email, dir, apellido, fecha.getSQLDate(), "C:\\imagenes\\" + nick + ".jpg", new HashMap(), pwd);
-        } else {
+        if (img.equals("NO")) {
             C = new Cliente(nick, nombre, email, dir, apellido, fecha.getSQLDate(), "sin_imagen", new HashMap(), pwd);
+        } else {
+            C = new Cliente(nick, nombre, email, dir, apellido, fecha.getSQLDate(), img, new HashMap(), pwd);
         }
         validarDatosC(C);
-        UsuarioDatos.agregarCliente(C.getNickname(), C.getNombre(), C.getEmail(), C.getDireccion(), C.getApellido(), C.getFechaNac(), C.getImagen().replace("C:\\imagenes\\", "ftp://127.0.0.1/"), C.getPwd());
-        if (img != null) {
-            File destino = new File("C:\\imagenes\\" + nick + ".jpg");
-            HerramientaArchivos.copiarArchivo(img, destino);
-        }
+        UsuarioDatos.agregarCliente(C.getNickname(), C.getNombre(), C.getEmail(), C.getDireccion(), C.getApellido(), C.getFechaNac(), img, pwd);
         this.Clientes = this.retornarClientes();
         this.asignarPedidosAClientes();
     }
 
-    public void insertarRestaurante(String nick, String email, String dir, String nombre, HashMap IMGs, int cat[], String pwd) throws SQLException, Exception {
+    public void insertarRestaurante(String nick, String email, String dir, String nombre,
+            HashMap IMGs, int cat[], String pwd) throws SQLException, Exception {
         Restaurante R = new Restaurante(nick, nombre, email, dir, null, null, null, null, pwd);
         validarDatosR(R, cat);
         UsuarioDatos.agregarRestaurante(nick, nombre, email, dir, pwd);
@@ -201,9 +197,7 @@ public final class ControladorUsuario {
         while (it.hasNext()) {
             Map.Entry entry = (Map.Entry) it.next();
             String path = (String) entry.getValue();
-            String nuevoPath = "C:\\imagenes\\" + R.getNickname() + "\\" + entry.getKey() + ".jpg";
-            UsuarioDatos.agregarImgRestaurante(nick, nuevoPath.replace("C:\\imagenes\\", "ftp://127.0.0.1/"));
-            HerramientaArchivos.copiarArchivo(new File(path), new File(nuevoPath));
+            UsuarioDatos.agregarImgRestaurante(nick,path);
         }
         this.Restaurantes = retornarRestaurantes();
     }
@@ -337,15 +331,15 @@ public final class ControladorUsuario {
         }
         return res;
     }
-    
-    public HashMap retornarCambiosEstado(int pedido) throws SQLException, ClassNotFoundException{
+
+    public HashMap retornarCambiosEstado(int pedido) throws SQLException, ClassNotFoundException {
         HashMap resultado = new HashMap();
         java.sql.ResultSet rs = PedidoDatos.consultarCambiosEstado(pedido);
-        
-        while(rs.next()){
+
+        while (rs.next()) {
             resultado.put(rs.getInt("pedido") + "_" + rs.getInt("estado"), new DataHistorialPedido(rs.getInt("estado"), rs.getString("fechahora")));
         }
-        
+
         return resultado;
     }
 
@@ -587,51 +581,52 @@ public final class ControladorUsuario {
         PedidoDatos.modificarEstado(numero, estado);
         asignarPedidosAClientes();
     }
-    
-    public void confirmarPedido(int numero) throws SQLException, ClassNotFoundException{
+
+    public void confirmarPedido(int numero) throws SQLException, ClassNotFoundException {
         //Cambiar estado del pedido
         cambiarEstadoPedido(numero, 0);
-        
+
         //generar cuerpo del mail
         DataPedido pedido = (DataPedido) getDataPedidos().get(numero);
-        
+
         Cliente c = (Cliente) Clientes.get(pedido.getCliente());
-        
+
         String mensaje = "<!DOCTYPE html><html><head>Estimado " + c.getNombre() + " " + c.getApellido() + ". Su pedido ha sido recibido con exito:</head>";
-        
+
         mensaje += "<body><h5>--Detalles del pedido</h5>"
                 + "<h5>-Productos:</h5>"
                 + "<ul>";
-        
+
         Iterator it = pedido.getProdPedidos().entrySet().iterator();
-        
-        while(it.hasNext()){
+
+        while (it.hasNext()) {
             Map.Entry entryProd = (Map.Entry) it.next();
             DataProdPedido prod = (DataProdPedido) entryProd.getValue();
-            
+
             mensaje += "<li>Nombre: " + prod.getProducto().getNombre() + " - Tipo : ";
-            
-            if(prod.getProducto() instanceof DataIndividual)
+
+            if (prod.getProducto() instanceof DataIndividual) {
                 mensaje += "Individual";
-            else
+            } else {
                 mensaje += "Promocion";
-            
+            }
+
             mensaje += " - Cantidad: " + prod.getCantidad() + " - PU: $" + prod.getProducto().getPrecio() + " - PV: $" + (prod.getProducto().getPrecio() * prod.getCantidad()) + "</li>";
         }
-        
+
         Restaurante r = (Restaurante) Restaurantes.get(pedido.getRestaurante());
-        
+
         mensaje += "</ul>"
                 + "<h5>-Precio Total: $" + pedido.getPrecio() + "</h5>"
                 + "<p>Gracias por preferirnos,</p>"
                 + "<p>Saludos.</p>"
                 + "<p>" + r.getNombre() + "</p>"
                 + "</body></html>";
-        
+
         Mail m = new Mail();
-        
+
         m.sendMail(c.getEmail(), "QuickOrder [" + pedido.getFecha().toString() + "]", mensaje);
-        
+
         System.out.println(mensaje);
     }
 

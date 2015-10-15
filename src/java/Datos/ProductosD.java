@@ -9,14 +9,14 @@ import java.sql.Statement;
  * @author Jean
  */
 public class ProductosD {
-
+    
     private final Estructura es = new Estructura();
     private Statement st;
-
+    
     public ProductosD() {//throws SQLException, ClassNotFoundException {
         // this.st = es.generarSt();
     }
-
+    
     public boolean productoRegistrado(String nombre, String restaurante) throws SQLException, ClassNotFoundException {
         this.st = es.generarSt();
         String query = " SELECT * "
@@ -27,22 +27,25 @@ public class ProductosD {
         st.getConnection().close();
         return rs.next();
     }
-
+    
     private void agregarImagenProducto(String restaurante, String producto, String imagen) throws SQLException, ClassNotFoundException {
+        
         this.st = es.generarSt();
         String query = " INSERT INTO productos_imagenes(restaurante,producto,imagen)"
                 + " VALUES('" + restaurante + "','" + producto + "','" + imagen + "')";
         st.execute(query);
     }
-
+    
     private void agregarProducto(String restaurante, String producto, String descripcion, String imagen) throws SQLException, ClassNotFoundException {
         this.st = es.generarSt();
         String query = " INSERT INTO productos(restaurante,nombre,descripcion) "
                 + " VALUES ('" + restaurante + "','" + producto + "','" + descripcion + "');";
         st.execute(query);
-        agregarImagenProducto(restaurante, producto, imagen);
+        if (!imagen.equals("sin_imagen")) {
+            agregarImagenProducto(restaurante, producto, imagen);
+        }
     }
-
+    
     public void agregarIndividual(String restaurante, String producto, float precio, String descripcion, String imagen) throws SQLException, ClassNotFoundException {
         this.st = es.generarSt();
         agregarProducto(restaurante, producto, descripcion, imagen);
@@ -50,7 +53,7 @@ public class ProductosD {
                 + " VALUES ('" + restaurante + "','" + producto + "'," + precio + ");";
         st.execute(query);
     }
-
+    
     public ResultSet listarIndividuales() throws SQLException, ClassNotFoundException {
         this.st = es.generarSt();
         String query = " SELECT p.restaurante, p.nombre, i.precio, p.descripcion "
@@ -61,7 +64,7 @@ public class ProductosD {
         st.getConnection().close();
         return rs;
     }
-
+    
     public void agregarPromocion(String restaurante, String producto, float descuento, String descripcion, String imagen, boolean act) throws SQLException, ClassNotFoundException {
         agregarProducto(restaurante, producto, descripcion, imagen);
         this.st = es.generarSt();
@@ -74,7 +77,7 @@ public class ProductosD {
         st.execute(query);
         st.getConnection().close();
     }
-
+    
     public void vincularPromocionProducto(String restaurante, String nombrePromo, String nombreProd, int cantidad) throws SQLException, ClassNotFoundException {
         this.st = es.generarSt();
         String query = " INSERT INTO promociones_productos(restaurante,nombrepromo,nombreprod,cantidad) "
@@ -82,7 +85,7 @@ public class ProductosD {
         st.execute(query);
         st.getConnection().close();
     }
-
+    
     public ResultSet listarPromociones() throws SQLException, ClassNotFoundException {
         this.st = es.generarSt();
         String query = " SELECT p.restaurante, p.nombre, p.descripcion, pp.descuento, pp.activa "
@@ -93,7 +96,7 @@ public class ProductosD {
         st.getConnection().close();
         return rs;
     }
-
+    
     public ResultSet listarProductosDePromocion(String restaurante, String nombre) throws SQLException, ClassNotFoundException {
         this.st = es.generarSt();
         String query = " SELECT p.restaurante, p.nombre, p.descripcion, i.precio, pp.cantidad"
@@ -108,7 +111,7 @@ public class ProductosD {
         st.getConnection().close();
         return rs;
     }
-
+    
     public String obtenerIMGdeProducto(String restaurante, String nombre) throws SQLException, ClassNotFoundException {
         this.st = es.generarSt();
         String query = "SELECT imagen"
@@ -120,7 +123,6 @@ public class ProductosD {
         if (rs.next()) {
             return rs.getString("imagen");
         }
-
         return "sin_imagen";
     }
 }

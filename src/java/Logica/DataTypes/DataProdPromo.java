@@ -39,4 +39,13 @@ public class DataProdPromo {
         return individual;
     }
 
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public void setIndividual(DataIndividual individual) {
+        this.individual = individual;
+    }
+    
+
 }

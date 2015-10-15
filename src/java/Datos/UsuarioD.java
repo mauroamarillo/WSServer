@@ -81,7 +81,7 @@ public class UsuarioD {
 
         st.execute(Cliente);
 
-        if (imagen.equals("sin_imagen")) {
+        if (imagen.equals("NO")) {
             return;
         }
 

@@ -90,25 +90,16 @@ public final class ControladorProductos {
         return individuales;
     }
 
-    private void guardarIMG(Producto P, File img) throws IOException {
-        if (img != null) {
-            new File("C:\\imagenes\\" + P.getRestaurante().getNickname() + "\\productos\\").mkdirs();
-            File destino = new File("C:\\imagenes\\" + P.getRestaurante().getNickname() + "\\productos\\" + P.getNombre() + ".jpg");
-            HerramientaArchivos.copiarArchivo(img, destino);
-        }
-    }
-
-    public void insertarIndividual(String nombre, String descripcion, String precio, File img, String restaurante) throws Exception, ParseException {
+    public void insertarIndividual(String nombre, String descripcion, String precio, String img, String restaurante) throws Exception, ParseException {
         float pre = Float.parseFloat(precio);
         Individual P;
-        if (img != null) {
-            P = new Individual(nombre, descripcion, pre, "C:\\imagenes\\" + CU._buscarRestauranten_n(restaurante).getNickname() + "\\productos\\" + nombre + ".jpg", CU._buscarRestauranten_n(restaurante));
-        } else {
+        if (img.equals("NO")) {
             P = new Individual(nombre, descripcion, pre, "sin_imagen", CU._buscarRestauranten_n(restaurante));
+        } else {
+            P = new Individual(nombre, descripcion, pre, img, CU._buscarRestauranten_n(restaurante));
         }
         validarProducto(P);
-        PD.agregarIndividual(P.getRestaurante().getNickname(), P.getNombre(), P.getPrecio(), P.getDescripcion(), P.getImagen().replace("C:\\imagenes\\", "ftp://127.0.0.1/"));
-        guardarIMG(P, img);
+        PD.agregarIndividual(P.getRestaurante().getNickname(), P.getNombre(), P.getPrecio(), P.getDescripcion(), P.getImagen());
         this.individuales = retornarIndividuales();
     }
 
@@ -193,29 +184,29 @@ public final class ControladorProductos {
     }
 
     /* NOMBRE, DESCRIPCION,IMAGEN,ACTIVADESCUENTO,*/
-    public void insertarPromocion(String nombre, String descripcion, File img, boolean activa, float descuento, String restaurante, HashMap subProductos) throws SQLException, Exception {
+    public void insertarPromocion(String nombre, String descripcion, String img,
+            boolean activa, float descuento, String restaurante, HashMap subProductos) throws SQLException, Exception {
         Promocion P;
 
         if (CU._buscarRestaurante(restaurante) == null || restaurante == null || restaurante.isEmpty()) {
             throw new Exception("Asignar Restaurante");
         }
-        if (img != null) {
-            P = new Promocion(nombre, descripcion, "C:\\imagenes\\" + CU._buscarRestaurante(restaurante).getNickname() + "\\productos\\" + nombre + ".jpg", activa, descuento, CU._buscarRestaurante(restaurante), null);
-        } else {
+        if (img.equals("NO")) {
             P = new Promocion(nombre, descripcion, "sin_imagen", activa, descuento, CU._buscarRestaurante(restaurante), null);
+        } else {
+            P = new Promocion(nombre, descripcion, img, activa, descuento, CU._buscarRestaurante(restaurante), null);
         }
         validarProducto(P);
         if (subProductos.size() < 1) {
             throw new Exception("Asignar Productos");
         }
-        PD.agregarPromocion(P.getRestaurante().getNickname(), P.getNombre(), P.getDescuento(), P.getDescripcion(), P.getImagen().replace("C:\\imagenes\\", "ftp://127.0.0.1/"), P.getActiva());
+        PD.agregarPromocion(P.getRestaurante().getNickname(), P.getNombre(), P.getDescuento(), P.getDescripcion(), P.getImagen(), P.getActiva());
         Iterator it = subProductos.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry entry = (Map.Entry) it.next();
             DataProdPromo pp = (DataProdPromo) entry.getValue();
             PD.vincularPromocionProducto(pp.getIndividual().getRestaurante(), P.getNombre(), pp.getIndividual().getNombre(), pp.getCantidad());
         }
-        guardarIMG(P, img);
         this.promociones = retornarPromociones();
         asignarProductosDePromocion();
     }
@@ -252,7 +243,7 @@ public final class ControladorProductos {
             P.setProdPromos(productosDePromo);
         }
     }
-    
+
     void actualizarDatos() throws SQLException, ClassNotFoundException {
         this.individuales = retornarIndividuales();
         this.promociones = retornarPromociones();

@@ -11,11 +11,11 @@ import Logica.DataTypes.DataCliente;
 import Logica.DataTypes.DataIndividual;
 import Logica.DataTypes.DataPedido;
 import Logica.DataTypes.DataProdPedido;
+import Logica.DataTypes.DataProdPromo;
 import Logica.DataTypes.DataProducto;
 import Logica.DataTypes.DataPromocion;
 import Logica.DataTypes.DataRestaurante;
 import Logica.Estado;
-import java.io.File;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -161,6 +161,18 @@ public class WSQuickOrder {
             iniciar();
             CU.insertarCliente(nick, email, dir, nombre, apellido, D, M, A, null, pwd);
         } catch (Exception ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void modificarCliente(String nick, String nombre, String email,
+            String direccion, String apellido, String imagen, String pwd) {
+        try {
+            iniciar();
+            CU.modificarCliente(nick, nombre, email, direccion, apellido, imagen, pwd);
+        } catch (SQLException ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -342,17 +354,6 @@ public class WSQuickOrder {
         return null;
     }
 
-    public void modificarCliente(String nick, String nombre, String email, String direccion, String apellido, String imagen, String pwd) {
-        try {
-            iniciar();
-            CU.modificarCliente(nick, nombre, email, direccion, apellido, imagen, pwd);
-        } catch (SQLException ex) {
-            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
     public Object[] getPedidosRestaurante(String restaurante) {
         try {
             iniciar();
@@ -403,7 +404,7 @@ public class WSQuickOrder {
     }
 
     public void insertarIndividual(String nombre, String descripcion,
-            String precio, File img, String restaurante) {
+            String precio, String img, String restaurante) {
         try {
             iniciar();
             CU.getCP().insertarIndividual(nombre, descripcion, precio, img, restaurante);
@@ -413,11 +414,15 @@ public class WSQuickOrder {
     }
 
     public void insertarPromocion(String nombre, String descripcion,
-            File img, boolean activa, float descuento, String restaurante,
-            HashMap subProductos) {
+            String img, boolean activa, float descuento, String restaurante,
+            DataIndividual[] subProductos) {
         try {
             iniciar();
-            CU.getCP().insertarPromocion(nombre, descripcion, img, activa, descuento, restaurante, subProductos);
+            HashMap SP = new HashMap();
+            for (DataIndividual DI : subProductos) {
+                SP.put(DI.getNombre(), DI);
+            }
+            CU.getCP().insertarPromocion(nombre, descripcion, img, activa, descuento, restaurante, SP);
         } catch (Exception ex) {
             Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -442,16 +447,79 @@ public class WSQuickOrder {
         iniciar();
         return CU.getCP().buscarProductosP(R).values().toArray();
     }
-    /*sacar
-     public DataIndividual pruebaIndividual() {
-     return new DataIndividual();
-     }
 
-     public DataProducto pruebaProducto() {
-     return new DataProducto();
-     }
+    public DataPromocion pruebaPromocion() {
+        return new DataPromocion();
+    }
 
-     public DataPromocion pruebaPromocion() {
-     return new DataPromocion();
-     }*/
+    public DataProdPromo pruebaProductoPromo() {
+        return new DataProdPromo();
+    }
+
+    /*Obtener Listas Pertenecientes a Restaurantes*/
+    public Object[] restauranteGetIndividuales(String nick) {
+        try {
+            iniciar();
+            return CU.buscarRestaurante(nick).getIndividuales().values().toArray();
+        } catch (SQLException ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public Object[] restauranteGetPromociones(String nick) {
+        try {
+            iniciar();
+            return CU.buscarRestaurante(nick).getPromociones().values().toArray();
+        } catch (SQLException ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public Object[] restauranteGetCategorias(String nick) {
+        try {
+            iniciar();
+            return CU.buscarRestaurante(nick).getCategorias().values().toArray();
+        } catch (SQLException ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public Object[] restauranteGetImagenes(String nick) {
+        try {
+            iniciar();
+            return CU.buscarRestaurante(nick).getImagenes().values().toArray();
+        } catch (SQLException ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    /*Obtener Listas Pertenecientes a Pedidos*/
+    public Object[] pedidoGetProdPedidos(int numero){
+        try {
+            iniciar();
+            return CU.getDataPedido(numero).getProdPedidos().values().toArray();
+        } catch (SQLException ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    /*Obtenes Listas Pertenecientes a Promociones*/
+    public Object[] promocionGetProdPromo(String R_P){
+        iniciar();
+        return ((DataPromocion)CU.getCP().BuscarDataXRestaurante_Producto(R_P)).getDataProdPromo().values().toArray();
+    }
 }
