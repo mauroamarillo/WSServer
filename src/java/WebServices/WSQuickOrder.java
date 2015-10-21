@@ -157,10 +157,10 @@ public class WSQuickOrder {
     }
 
     public void insertarCliente(String nick, String email, String dir,
-            String nombre, String apellido, String D, String M, String A, String pwd) {
+            String nombre, String apellido, String D, String M, String A,String img, String pwd) {
         try {
             iniciar();
-            CU.insertarCliente(nick, email, dir, nombre, apellido, D, M, A, null, pwd);
+            CU.insertarCliente(nick, email, dir, nombre, apellido, D, M, A, img, pwd);
         } catch (Exception ex) {
             Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
