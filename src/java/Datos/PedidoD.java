@@ -146,4 +146,16 @@ public class PedidoD {
         st.getConnection().close();
         return rs;
     }
+    
+    public ResultSet consultarInfoPedidos() throws SQLException, ClassNotFoundException{
+        this.st = es.generarSt();
+        String query = "SELECT p.numero, ur.nombre as restaurante, uc.nombre || ' ' || c.apellido as cliente, p.fecha"
+                + " FROM pedidos p, clientes c, usuarios ur, usuarios uc"
+                + " WHERE p.restaurante = ur.nickname"
+                + " AND c.\"nicknameC\" = p.cliente"
+                + " AND c.\"nicknameC\" = uc.nickname;";
+        ResultSet rs = st.executeQuery(query);
+        st.getConnection().close();
+        return rs;
+    }
 }

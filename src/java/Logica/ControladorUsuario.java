@@ -30,7 +30,6 @@ public final class ControladorUsuario {
     private HashMap Categorias = new HashMap();
 
     public ControladorUsuario() throws SQLException, ClassNotFoundException {
-
         this.UsuarioDatos = new UsuarioD();
         this.CategoriaDatos = new CategoriaD();
         this.PedidoDatos = new PedidoD();
@@ -628,6 +627,17 @@ public final class ControladorUsuario {
         m.sendMail(c.getEmail(), "QuickOrder [" + pedido.getFecha().toString() + "]", mensaje);
 
         System.out.println(mensaje);
+    }
+    
+    public HashMap getInfoPedidos() throws SQLException, ClassNotFoundException {
+        java.sql.ResultSet rs = PedidoDatos.consultarInfoPedidos();
+        HashMap resultado =  new HashMap();
+        
+        while(rs.next()){
+            resultado.put(rs.getInt("numero"), new DataPedido(rs.getInt("numero"), new Fecha(rs.getDate("fecha")), null, null, rs.getString("cliente"), rs.getString("restaurante"), 0, null, null));
+        }
+
+        return resultado;
     }
 
     public void actualizarDatos() throws SQLException, ClassNotFoundException {

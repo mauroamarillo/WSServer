@@ -8,6 +8,7 @@ package WebServices;
 import Logica.ControladorUsuario;
 import Logica.DataTypes.DataCalificacion;
 import Logica.DataTypes.DataCliente;
+import Logica.DataTypes.DataHistorialPedido;
 import Logica.DataTypes.DataIndividual;
 import Logica.DataTypes.DataPedido;
 import Logica.DataTypes.DataProdPedido;
@@ -219,6 +220,10 @@ public class WSQuickOrder {
     public Object[] filtrarRestaurantes(String filtro) {
         iniciar();
         return CU.filtrarRestaurantes(filtro).values().toArray();
+    }
+    
+    public DataHistorialPedido dhp(){
+        return new DataHistorialPedido();
     }
 
     public Object[] retornarCambiosEstado(int pedido) {
@@ -521,5 +526,30 @@ public class WSQuickOrder {
     public Object[] promocionGetProdPromo(String R_P){
         iniciar();
         return ((DataPromocion)CU.getCP().BuscarDataXRestaurante_Producto(R_P)).getDataProdPromo().values().toArray();
+    }
+    
+    public Object[] getInfoPedidos(){
+        try {
+            iniciar();
+            return CU.getInfoPedidos().values().toArray();
+        } catch (SQLException ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return null;
+    }
+    
+    public Object[] clienteGetPedidos(String nick){
+        try {
+            iniciar();
+            return CU.buscarCliente(nick).getPedidos().values().toArray();
+        } catch (SQLException ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }
