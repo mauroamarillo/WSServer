@@ -4,6 +4,7 @@ import Datos.CategoriaD;
 import Datos.PedidoD;
 import Datos.UsuarioD;
 import Logica.DataTypes.DataCalificacion;
+import Logica.DataTypes.DataCategoria;
 import Logica.DataTypes.DataCliente;
 import Logica.DataTypes.DataHistorialPedido;
 import Logica.DataTypes.DataIndividual;
@@ -11,6 +12,8 @@ import Logica.DataTypes.DataPedido;
 import Logica.DataTypes.DataProdPedido;
 import Logica.DataTypes.DataRestaurante;
 import java.sql.SQLException;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -171,7 +174,13 @@ public final class ControladorUsuario {
     public void insertarCliente(String nick, String email, String dir, String nombre, String apellido, 
             String D, String M, String A, String img, String pwd) throws SQLException, Exception {
         Cliente C;
-        Fecha fecha = new Fecha(D, M, A);
+        Fecha fecha;
+        try {
+            NumberFormat.getInstance().parse(M);
+            fecha = new Fecha(Integer.valueOf(D), Integer.valueOf(M), Integer.valueOf(A));
+        } catch (ParseException e) {
+            fecha = new Fecha(D, M, A);
+        }
 
         if (img.equals("NO")) {
             C = new Cliente(nick, nombre, email, dir, apellido, fecha.getSQLDate(), "sin_imagen", new HashMap(), pwd);
@@ -637,6 +646,15 @@ public final class ControladorUsuario {
             resultado.put(rs.getInt("numero"), new DataPedido(rs.getInt("numero"), new Fecha(rs.getDate("fecha")), null, null, rs.getString("cliente"), rs.getString("restaurante"), 0, null, null));
         }
 
+        return resultado;
+    }
+    
+    public HashMap getDataCategorias() throws ClassNotFoundException, SQLException{
+        java.sql.ResultSet rs = CategoriaDatos.consultarCategorias();
+        HashMap resultado = new HashMap();
+        while (rs.next()){
+            resultado.put(rs.getInt("idCat"), new DataCategoria(rs.getInt("idCat"),rs.getString("nombre")));
+        }
         return resultado;
     }
 

@@ -7,6 +7,7 @@ package WebServices;
 
 import Logica.ControladorUsuario;
 import Logica.DataTypes.DataCalificacion;
+import Logica.DataTypes.DataCategoria;
 import Logica.DataTypes.DataCliente;
 import Logica.DataTypes.DataHistorialPedido;
 import Logica.DataTypes.DataIndividual;
@@ -159,6 +160,7 @@ public class WSQuickOrder {
     public void insertarCliente(String nick, String email, String dir,
             String nombre, String apellido, String D, String M, String A,String img, String pwd) {
         try {
+            
             iniciar();
             CU.insertarCliente(nick, email, dir, nombre, apellido, D, M, A, img, pwd);
         } catch (Exception ex) {
@@ -551,5 +553,21 @@ public class WSQuickOrder {
             Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+    
+    public Object[] consultarDataCategorias(){
+        try {
+            iniciar();
+            return CU.getDataCategorias().values().toArray();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public DataCategoria dc(){
+        return new DataCategoria();
     }
 }
