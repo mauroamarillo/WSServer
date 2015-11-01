@@ -422,12 +422,12 @@ public class WSQuickOrder {
 
     public void insertarPromocion(String nombre, String descripcion,
             String img, boolean activa, float descuento, String restaurante,
-            DataIndividual[] subProductos) {
+            DataProdPromo[] subProductos) {
         try {
             iniciar();
             HashMap SP = new HashMap();
-            for (DataIndividual DI : subProductos) {
-                SP.put(DI.getNombre(), DI);
+            for (DataProdPromo DI : subProductos) {
+                SP.put(DI.getIndividual().getNombre(), DI);
             }
             CU.getCP().insertarPromocion(nombre, descripcion, img, activa, descuento, restaurante, SP);
         } catch (Exception ex) {
@@ -562,6 +562,50 @@ public class WSQuickOrder {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public Object[] consultarEstadisticasRestaurante(){
+        try {
+            return CU.getDataEstadisticaXRestaurante().values().toArray();
+        } catch (SQLException ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public Object[] consultarEstadisticasURL(){
+        try {
+            return CU.getDataEstadisticaXURL().values().toArray();
+        } catch (SQLException ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public Object[] consultarEstadisticasSO(){
+        try {
+            return CU.getDataEstadisticaXSO().values().toArray();
+        } catch (SQLException ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public Object[] consultarEstadisticasBrowser(){
+        try {
+            return CU.getDataEstadisticaXBrowser().values().toArray();
+        } catch (SQLException ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;

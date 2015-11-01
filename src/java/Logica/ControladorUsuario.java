@@ -171,7 +171,7 @@ public final class ControladorUsuario {
         return consultarRestaurantesPorCategoria(categoria).size();
     }
 
-    public void insertarCliente(String nick, String email, String dir, String nombre, String apellido, 
+    public void insertarCliente(String nick, String email, String dir, String nombre, String apellido,
             String D, String M, String A, String img, String pwd) throws SQLException, Exception {
         Cliente C;
         Fecha fecha;
@@ -205,7 +205,7 @@ public final class ControladorUsuario {
         while (it.hasNext()) {
             Map.Entry entry = (Map.Entry) it.next();
             String path = (String) entry.getValue();
-            UsuarioDatos.agregarImgRestaurante(nick,path);
+            UsuarioDatos.agregarImgRestaurante(nick, path);
         }
         this.Restaurantes = retornarRestaurantes();
     }
@@ -433,7 +433,13 @@ public final class ControladorUsuario {
     }
 
     public int insertarPedido(String D, String M, String A, Estado estado, String cliente, String restaurante, HashMap dataProdPedidos) throws SQLException, Exception {
-        Fecha fecha = new Fecha(D, M, A);
+        Fecha fecha;
+        try {
+            NumberFormat.getInstance().parse(M);
+            fecha = new Fecha(Integer.valueOf(D), Integer.valueOf(M), Integer.valueOf(A));
+        } catch (ParseException e) {
+            fecha = new Fecha(D, M, A);
+        }
         Pedido P = new Pedido(0, fecha.getSQLDate(), estado, this._buscarCliente(cliente), this._buscarRestaurante(restaurante), dataProdPedidos, null);
         validarPedido(P);
         int numero = (PedidoDatos.agregarPedido(fecha.getSQLDate(), estado.ordinal(), cliente, restaurante));
@@ -637,23 +643,23 @@ public final class ControladorUsuario {
 
         System.out.println(mensaje);
     }
-    
+
     public HashMap getInfoPedidos() throws SQLException, ClassNotFoundException {
         java.sql.ResultSet rs = PedidoDatos.consultarInfoPedidos();
-        HashMap resultado =  new HashMap();
-        
-        while(rs.next()){
+        HashMap resultado = new HashMap();
+
+        while (rs.next()) {
             resultado.put(rs.getInt("numero"), new DataPedido(rs.getInt("numero"), new Fecha(rs.getDate("fecha")), null, null, rs.getString("cliente"), rs.getString("restaurante"), 0, null, null));
         }
 
         return resultado;
     }
-    
-    public HashMap getDataCategorias() throws ClassNotFoundException, SQLException{
+
+    public HashMap getDataCategorias() throws ClassNotFoundException, SQLException {
         java.sql.ResultSet rs = CategoriaDatos.consultarCategorias();
         HashMap resultado = new HashMap();
-        while (rs.next()){
-            resultado.put(rs.getInt("idCat"), new DataCategoria(rs.getInt("idCat"),rs.getString("nombre")));
+        while (rs.next()) {
+            resultado.put(rs.getInt("idCat"), new DataCategoria(rs.getInt("idCat"), rs.getString("nombre")));
         }
         return resultado;
     }
@@ -664,5 +670,45 @@ public final class ControladorUsuario {
         this.Clientes = retornarClientes();
         this.Categorias = consultarCategorias();
         asignarPedidosAClientes();
+    }
+
+    public HashMap getDataEstadisticaXURL() throws SQLException, ClassNotFoundException {
+        java.sql.ResultSet datos = new Estadistica().getVisitas();
+        HashMap resultado = new HashMap();
+        while (datos.next()) {
+            resultado.put(datos.getString("url1"), datos.getString("url1") + "%" + datos.getString("visitas"));
+        }
+        
+        return resultado;
+    }
+    
+    public HashMap getDataEstadisticaXSO() throws SQLException, ClassNotFoundException {
+        java.sql.ResultSet datos = new Estadistica().getVisitasPorSO();
+        HashMap resultado = new HashMap();
+        while (datos.next()) {
+            resultado.put(datos.getString("so"), datos.getString("so") + "%" + datos.getString("visitas"));
+        }
+        
+        return resultado;
+    }
+    
+    public HashMap getDataEstadisticaXBrowser() throws SQLException, ClassNotFoundException {
+        java.sql.ResultSet datos = new Estadistica().getVisitasPorBrowser();
+        HashMap resultado = new HashMap();
+        while (datos.next()) {
+            resultado.put(datos.getString("browser"), datos.getString("browser") + "%" + datos.getString("visitas"));
+        }
+        
+        return resultado;
+    }
+    
+    public HashMap getDataEstadisticaXRestaurante() throws SQLException, ClassNotFoundException {
+        java.sql.ResultSet datos = new Estadistica().getVisitasPorRestaurante();
+        HashMap resultado = new HashMap();
+        while (datos.next()) {
+            resultado.put(datos.getString("nickname"), datos.getString("nickname") + "%" + datos.getString("nombre") + "%" + datos.getString("email") + "%" + datos.getString("direccion") + "%" + datos.getInt("visitas"));
+        }
+        
+        return resultado;
     }
 }

@@ -10,8 +10,6 @@ import Logica.DataTypes.DataIndividual;
 import Logica.DataTypes.DataProdPromo;
 import Logica.DataTypes.DataProducto;
 import Logica.DataTypes.DataPromocion;
-import java.io.File;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.HashMap;
@@ -94,9 +92,9 @@ public final class ControladorProductos {
         float pre = Float.parseFloat(precio);
         Individual P;
         if (img.equals("NO")) {
-            P = new Individual(nombre, descripcion, pre, "sin_imagen", CU._buscarRestauranten_n(restaurante));
+            P = new Individual(nombre, descripcion, pre, "sin_imagen", CU._buscarRestaurante(restaurante));
         } else {
-            P = new Individual(nombre, descripcion, pre, img, CU._buscarRestauranten_n(restaurante));
+            P = new Individual(nombre, descripcion, pre, img, CU._buscarRestaurante(restaurante));
         }
         validarProducto(P);
         PD.agregarIndividual(P.getRestaurante().getNickname(), P.getNombre(), P.getPrecio(), P.getDescripcion(), P.getImagen());
