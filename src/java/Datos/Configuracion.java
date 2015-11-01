@@ -72,6 +72,7 @@ public class Configuracion {
             String pass= propiedades.getProperty("pass");
             
             String url = "jdbc:postgresql://"+host+":"+puerto+"/"+bd;
+            
             if (conexion != null) {
                 return;
             }

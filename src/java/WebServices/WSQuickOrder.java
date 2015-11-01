@@ -614,4 +614,14 @@ public class WSQuickOrder {
     public DataCategoria dc(){
         return new DataCategoria();
     }
+
+    public void registroVisitas(String ip, String url, String browser, String so){
+        try {
+            new Logica.Estadistica().registrarVisita(ip, url, browser, so);
+        } catch (SQLException ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
