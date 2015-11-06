@@ -5,10 +5,15 @@
  */
 package Logica;
 
-import javax.mail.*;
-import javax.mail.internet.*;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.mail.Message;
 import javax.mail.MessagingException;
-import java.util.*;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 /**
  *
@@ -18,23 +23,31 @@ public class Mail {
 
     public Mail() {
     }
-    
-        public void sendMail(String para, String asunto, String mensaje){
-            Properties properties = System.getProperties();
+
+    public void sendMail(String para, String asunto, String mensaje) {
+        try {
+            Properties mailServerProperties;
+            Session getMailSession;
+            MimeMessage generateMailMessage;
             
-            properties.setProperty("mail.smtp.host", "localhost");
+            mailServerProperties = System.getProperties();
+            mailServerProperties.put("mail.smtp.port", "587");
+            mailServerProperties.put("mail.smtp.auth", "true");
+            mailServerProperties.put("mail.smtp.starttls.enable", "true");
             
-            Session session = Session.getDefaultInstance(properties);
+            getMailSession = Session.getDefaultInstance(mailServerProperties, null);
+            generateMailMessage = new MimeMessage(getMailSession);
+            generateMailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(para));
+            generateMailMessage.setSubject(asunto);
+            generateMailMessage.setContent(mensaje, "text/html");
             
-            try{
-                MimeMessage message = new MimeMessage(session);
-                message.setFrom(new InternetAddress("no_contestar@QuickOrder.com"));
-                message.addRecipient(Message.RecipientType.TO, new InternetAddress(para));
-                message.setSubject(asunto);
-                message.setContent(mensaje, "text/html; charset=utf-8");
-                Transport.send(message);
-            }catch (MessagingException mex) {
-                System.out.println(mex.getMessage());
-            }
+            Transport transport = getMailSession.getTransport("smtp");
+            
+            transport.connect("smtp.gmail.com", "mauro.aamarillo@gmail.com", "iwanna666");
+            transport.sendMessage(generateMailMessage, generateMailMessage.getAllRecipients());
+            transport.close();
+        } catch (MessagingException ex) {
+            Logger.getLogger(Mail.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

@@ -394,6 +394,17 @@ public class WSQuickOrder {
             Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public void confirmarPedido(int numero){
+       try {
+            iniciar();
+            CU.confirmarPedido(numero);
+        } catch (SQLException ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(WSQuickOrder.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+    }
 
     public Object[] getDataPromociones() {
         iniciar();

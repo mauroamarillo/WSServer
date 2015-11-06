@@ -139,9 +139,10 @@ public class PedidoD {
     
     public ResultSet consultarCambiosEstado(int pedido) throws SQLException, ClassNotFoundException{
         this.st = es.generarSt();
-        String query = "SELECT *"
-                + " FROM historialcambioestado"
-                + " WHERE pedido = " + pedido + ";";
+        String query = "SELECT pedido, estado, fechahora as fh, to_char(fechahora, 'DD/MM/YYYY HH:MI') as fechahora" 
+                + " FROM HistorialCambioEstado" 
+                + " WHERE pedido = " + pedido 
+                + " ORDER BY fh ASC;";
         ResultSet rs = st.executeQuery(query);
         st.getConnection().close();
         return rs;
