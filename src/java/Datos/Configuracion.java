@@ -27,7 +27,7 @@ public class Configuracion {
     private Connection conexion;
 
     private final static String CARPETA = System.getProperty("user.home") + "\\QuickOrder\\";
-    private final static String ARCHIVO = "QuickOrderWS.properties";
+    private final static String ARCHIVO = "QuickOrderWSDATA.properties";
     private final static String RUTA = CARPETA + ARCHIVO;
 
     private static boolean existe() {
