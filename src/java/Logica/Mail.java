@@ -43,8 +43,8 @@ public class Mail {
             archivo.createNewFile();
             BufferedWriter bw;
             bw = new BufferedWriter(new FileWriter(archivo));
-            bw.write("email=mauro.aamarillo@gmail.com\n");
-            bw.write("pass=iwanna666\n");
+            bw.write("email=tupedido.quickorder@gmail.com\n");
+            bw.write("pass=quickorder\n");
             bw.close();
         } catch (IOException ex) {
             Logger.getLogger(Configuracion.class.getName()).log(Level.SEVERE, null, ex);

@@ -605,7 +605,7 @@ public final class ControladorUsuario {
 
         Cliente c = (Cliente) Clientes.get(pedido.getCliente());
 
-        String mensaje = "<!DOCTYPE html><html><head>Estimado " + c.getNombre() + " " + c.getApellido() + ". Su pedido ha sido recibido con exito:</head>";
+        String mensaje = "<!DOCTYPE html><html><head>Estimado <tt style=\"font-style: italic\">" + c.getNombre() + " " + c.getApellido() + "</tt>. Su pedido ha sido recibido con exito:</head>";
 
         mensaje += "<body><h5>--Detalles del pedido</h5>"
                 + "<h5>-Productos:</h5>"
@@ -634,7 +634,7 @@ public final class ControladorUsuario {
                 + "<h5>-Precio Total: $" + pedido.getPrecio() + "</h5>"
                 + "<p>Gracias por preferirnos,</p>"
                 + "<p>Saludos.</p>"
-                + "<p>" + r.getNombre() + "</p>"
+                + "<p><tt style=\"font-style: italic\">" + r.getNombre() + "</tt></p>"
                 + "</body></html>";
 
         Mail m = new Mail();
